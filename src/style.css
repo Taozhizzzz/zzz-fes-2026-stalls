@@ -35,10 +35,11 @@
   --radius-sm: 8px;
   --maxw: 1080px;
 
-  /* 中文黑体优先：Windows 用微软雅黑，macOS 用苹方，Linux 用思源/文泉驿 */
+  /* 中文黑体优先：Windows 用微软雅黑，iOS/macOS 用苹方，Android/鸿蒙用思源、Noto 与鸿蒙体 */
   --font: "Microsoft YaHei", "微软雅黑", "PingFang SC", "Hiragino Sans GB",
-    "Source Han Sans SC", "Noto Sans SC", SimHei, "黑体", "Heiti SC",
-    "WenQuanYi Micro Hei", system-ui, -apple-system, "Segoe UI", sans-serif;
+    "Source Han Sans SC", "Source Han Sans CN", "Noto Sans SC", "Noto Sans CJK SC",
+    "HarmonyOS Sans SC", SimHei, "黑体", "Heiti SC", "WenQuanYi Micro Hei",
+    system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 /* ---------- 基础 ---------- */
