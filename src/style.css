@@ -113,6 +113,53 @@ img {
   padding: 26px 18px 22px;
 }
 
+/* ---------- 制作者信息 ---------- */
+.topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.maker {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.maker-label {
+  font-size: 12px;
+  color: var(--topbar-ink-dim);
+}
+
+.maker-label b {
+  color: var(--topbar-ink);
+  font-weight: 700;
+}
+
+.maker-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 11px;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--topbar-ink);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.maker-link:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---------- 活动标签 ---------- */
 .fes-tag {
   display: inline-block;
   padding: 2px 8px;
