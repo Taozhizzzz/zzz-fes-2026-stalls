@@ -253,11 +253,7 @@
 
     let html = chipHtml('zone', 'ALL', '全部', '', filter.zone === 'ALL');
     ZONES.forEach(function (z) {
-      const total = STALLS.filter(function (s) { return zoneOf(s.id) === z.key; }).length;
-      const done = STALLS.filter(function (s) {
-        return zoneOf(s.id) === z.key && stateOf(s.id) === 'done';
-      }).length;
-      html += chipHtml('zone', z.key, z.label, done + '/' + total, filter.zone === z.key);
+      html += chipHtml('zone', z.key, z.label, '', filter.zone === z.key);
     });
     box.innerHTML = html;
   }
