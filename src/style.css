@@ -35,8 +35,10 @@
   --radius-sm: 8px;
   --maxw: 1080px;
 
-  --font: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
-    "Microsoft YaHei", sans-serif;
+  /* 中文黑体优先：Windows 用微软雅黑，macOS 用苹方，Linux 用思源/文泉驿 */
+  --font: "Microsoft YaHei", "微软雅黑", "PingFang SC", "Hiragino Sans GB",
+    "Source Han Sans SC", "Noto Sans SC", SimHei, "黑体", "Heiti SC",
+    "WenQuanYi Micro Hei", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 /* ---------- 基础 ---------- */
