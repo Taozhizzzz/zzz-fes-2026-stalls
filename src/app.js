@@ -460,7 +460,7 @@
         '</div>';
     } else {
       if (d.owner) {
-        html += '<div class="kv"><span class="k">摊主</span><span class="v">' + esc(d.owner) + '</span></div>';
+        html += '<div class="kv kv-owner"><span class="k">摊主</span><span class="v">' + esc(d.owner) + '</span></div>';
       }
       if (links.length) {
         html += '<div class="kv"><span class="k">小红书</span><span class="v">' +

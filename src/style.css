@@ -698,6 +698,27 @@ img {
   color: var(--text-dim);
 }
 
+/* ---------- 摊主行：沿用摊位卡片的浅灰背板 ---------- */
+.kv-owner {
+  align-items: baseline;
+  margin-bottom: 6px;
+  padding: 11px 13px;
+  border-bottom: none;
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--card-ink);
+}
+
+.kv-owner .k {
+  color: var(--card-ink-faint);
+  font-weight: 700;
+}
+
+.kv-owner .v {
+  color: var(--card-ink);
+  font-weight: 700;
+}
+
 .link {
   display: inline-block;
   margin-right: 12px;
