@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>绝区零 FES 2026 · 4 号馆同人摊位查询</title>
+  <meta name="description" content="绝区零 FES 2026 四号馆同人区摊位信息汇总：按区查找摊位、搜索制品、按类型筛选，收藏你想逛的摊位生成自己的逛展清单。">
+  <meta name="theme-color" content="#0b0b0e">
+  <meta property="og:title" content="绝区零 FES 2026 · 同人摊位查询">
+  <meta property="og:description" content="按区查摊位、按制品类型筛选、收藏逛展清单。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <span class="fes-tag">FES 2026</span>
+    <h1>绝区零 FES 2026 <span class="blk">4 号馆同人区</span> 摊位查询</h1>
+    <p>官方名单只公布摊位位置与名称。本页汇总摊主公开发布的制品信息，可搜索、按制品类型筛选，并把想逛的摊位收进自己的清单。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ 视图：主页 ============ -->
+  <main id="view-home">
+    <div class="controls">
+      <div class="stats">
+        <span class="pill solid">总摊位 <b id="stat-total">0</b></span>
+        <span class="pill">已收录 <b id="stat-done">0</b></span>
+        <span class="pill">待补充 <b id="stat-todo">0</b></span>
+        <a class="pill wish" href="#/wishlist" title="查看我的逛展清单">我的清单 <b id="stat-wish">0</b></a>
+      </div>
+
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.2-3.2"></path>
+        </svg>
+        <input id="search-input" type="search" autocomplete="off"
+               placeholder="搜索编号 / 摊位名 / 摊主 / 制品，如 A04、徽章、立牌">
+      </div>
+
+      <div class="filters">
+        <div class="filter-row" id="zone-filters" role="group" aria-label="按区分筛选"></div>
+        <div class="filter-row" id="type-filters" role="group" aria-label="按制品类型筛选"></div>
+        <label class="wish-toggle">
+          <input type="checkbox" id="only-wish">
+          <span>只看我的清单</span>
+        </label>
+      </div>
+    </div>
+
+    <div id="list"></div>
+  </main>
+
+  <!-- ============ 视图：摊位详情（JS 渲染） ============ -->
+  <main id="view-detail" hidden></main>
+
+  <!-- ============ 视图：我的清单（JS 渲染） ============ -->
+  <main id="view-wishlist" hidden></main>
+
+</div>
+
+<footer class="footer">
+  <p>摊位名单来自 FES 官方公布信息，其余内容整理自摊主公开发布，仅供参考，以现场实际为准。</p>
+  <p>本页为粉丝制作，与主办方无关。</p>
+</footer>
+
+<!-- ============ 图片放大层 ============ -->
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lb-close" id="lb-close" type="button" aria-label="关闭">&times;</button>
+  <img class="lb-img" id="lb-img" src="" alt="">
+</div>
+
+<script src="data/stalls.js"></script>
+<script src="data/meta.js"></script>
+<script src="data/details.js"></script>
+<script src="src/app.js"></script>
+
+</body>
+</html>
