@@ -475,6 +475,12 @@
       if (d.updatedAt) {
         html += '<div class="kv"><span class="k">更新</span><span class="v muted">' + esc(d.updatedAt) + '</span></div>';
       }
+      if (!ps.length) {
+        html += '<div class="notice">' +
+          '<div class="notice-t">在售制品待补充</div>' +
+          '<p>摊主信息已收录，制品清单还在整理中。</p>' +
+          '</div>';
+      }
     }
 
     if (ps.length) {
