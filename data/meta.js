@@ -71,10 +71,11 @@
       key: 'calydon', label: '卡吕冬之子',
       agents: [
         { key: 'caesar', label: '凯撒' },
-        { key: 'luciana', label: '露西亚娜' },
+        { key: 'luciana', label: '露西' },
         { key: 'lighter', label: '莱特' },
         { key: 'burnice', label: '柏妮思' },
-        { key: 'piper', label: '派派' }
+        { key: 'piper', label: '派派' },
+        { key: 'pokona', label: '波可娜' }
       ]
     },
     {
