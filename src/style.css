@@ -9,8 +9,8 @@
 :root {
   --bg: #0b0b0e;
   --bg-soft: #121216;
-  --card: #cbcbcb;
-  --card-hover: #d7d7d7;
+  --card: #e6e6e6;
+  --card-hover: #eeeeee;
   --line: #2a2a33;
   --line-soft: #202028;
   --text: #f2f2f5;
@@ -19,9 +19,9 @@
   --accent: #ff6a1a;
   --accent-ink: #0b0b0e;
   /* 浅灰背板上专用：保证深色文字与深橙在灰底上的对比度 */
-  --card-ink: #1a1a1d;
-  --card-ink-dim: #4a4a54;
-  --card-ink-faint: #6a6a74;
+  --card-ink: #2b2b2e;
+  --card-ink-dim: #55555a;
+  --card-ink-faint: #78787d;
   --accent-deep: #b34100;
   --ok: #4ade80;
   --warn: #fbbf24;
@@ -370,8 +370,8 @@ img {
 }
 
 .stall-card:hover {
-  background: var(--card-hover);
-  border-color: #b8b8b8;
+  background-color: var(--card-hover);
+  border-color: rgba(0, 0, 0, 0.16);
 }
 
 .stall-card:active {
@@ -687,7 +687,7 @@ img {
   display: grid;
   place-items: center;
   aspect-ratio: 4 / 3;
-  background: #b4b4b4;
+  background: #d4d4d4;
   overflow: hidden;
 }
 
@@ -768,8 +768,8 @@ img {
 }
 
 .pager-link:hover {
-  background: var(--card-hover);
-  border-color: #b8b8b8;
+  background-color: var(--card-hover);
+  border-color: rgba(0, 0, 0, 0.16);
 }
 
 .pager-link.next {
@@ -817,8 +817,8 @@ img {
 }
 
 .wish-row:hover {
-  background: var(--card-hover);
-  border-color: #b8b8b8;
+  background-color: var(--card-hover);
+  border-color: rgba(0, 0, 0, 0.16);
 }
 
 .wish-name {
@@ -840,6 +840,26 @@ img {
   margin: 18px 0 0;
   color: var(--text-faint);
   font-size: 12px;
+}
+
+/* ---------- 浅灰背板质感 ---------- */
+/* 细密 45° 斜纹，模拟官方物料的纸张 / 拉丝质感。
+   必须放在各组件的 background 简写之后：简写会把 texture 重置为 none，
+   这里再用 background-image 补回来，hover 因此改用 background-color。 */
+.stall-card,
+.product,
+.pager-link,
+.wish-row {
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0.03) 0px,
+      rgba(0, 0, 0, 0.03) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(0, 0, 0, 0.045));
+  border-color: rgba(0, 0, 0, 0.09);
 }
 
 /* ---------- 空状态 ---------- */
