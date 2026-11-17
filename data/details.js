@@ -20,7 +20,7 @@
    │   products: [                                         │
    │     {                                                 │
    │       title: '亚克力立牌',                              │
-   │       type: 'stand',        // 见 meta.js 的 TYPES     │
+   │       characters: ['anby', 'nicole'],                 │
    │       price: 45,            // 纯数字；文字价写 null     │
    │       priceText: '赠',      // price 为 null 时用它显示  │
    │       desc: '高 15cm，限量 50',                        │
@@ -31,8 +31,9 @@
    └───────────────────────────────────────────────────────┘
 
    字段说明：
-   · type 必须是 meta.js 里 TYPES 的某个 key（badge/stand/charm/
-     card/book/plush/apparel/other），这样全站类型筛选才能命中。
+   · characters 填角色的 key（见 data/meta.js 的 CAMPS），例如
+     'anby'、'miyabi'。一件制品可以标多个角色（比如全员向、双人组），
+     也可以留空数组——留空的制品会归入「其他」分类。
    · price 存数字是为了能按价格筛选/排序；遇到「赠」「30/套」这类
      非纯数字，price 填 null，用 priceText 展示原文。
    · images 是数组，一个制品可以多图；图片放进 assets/<摊位编号>/ 下。

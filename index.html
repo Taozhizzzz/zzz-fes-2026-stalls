@@ -9,7 +9,7 @@
   <meta property="og:title" content="绝区零 FES 2026 · 同人摊位查询">
   <meta property="og:description" content="按区查摊位、按制品类型筛选、收藏逛展清单。">
   <meta property="og:type" content="website">
-  <link rel="stylesheet" href="src/style.css?v=20261117-3">
+  <link rel="stylesheet" href="src/style.css?v=20261117-4">
 </head>
 <body>
 
@@ -46,12 +46,13 @@
           <path d="m20 20-3.2-3.2"></path>
         </svg>
         <input id="search-input" type="search" autocomplete="off"
-               placeholder="搜索编号 / 摊位名 / 摊主 / 制品，如 A04、徽章、立牌">
+               placeholder="搜索编号 / 摊位名 / 摊主 / 角色，如 A04、安比、星见雅">
       </div>
 
       <div class="filters">
         <div class="filter-row" id="zone-filters" role="group" aria-label="按区分筛选"></div>
-        <div class="filter-row" id="type-filters" role="group" aria-label="按制品类型筛选"></div>
+        <div class="filter-row" id="camp-filters" role="group" aria-label="按阵营筛选"></div>
+        <div class="filter-row" id="agent-filters" role="group" aria-label="按角色筛选" hidden></div>
         <label class="wish-toggle">
           <input type="checkbox" id="only-wish">
           <span>只看我的清单</span>

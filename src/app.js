@@ -13,7 +13,8 @@
   const STALLS = Array.isArray(FES.STALLS) ? FES.STALLS : [];
   const DETAILS = (FES.DETAILS && typeof FES.DETAILS === 'object') ? FES.DETAILS : {};
   const ZONES = Array.isArray(FES.ZONES) ? FES.ZONES : [];
-  const TYPES = Array.isArray(FES.TYPES) ? FES.TYPES : [];
+  const CAMPS = Array.isArray(FES.CAMPS) ? FES.CAMPS : [];
+  const AGENT_MAP = (FES.AGENT_MAP && typeof FES.AGENT_MAP === 'object') ? FES.AGENT_MAP : {};
 
   const STORE_KEY = 'fes2026.stalls.wishlist';
 
@@ -29,11 +30,19 @@
     return String(id || '').charAt(0);
   }
 
-  function typeLabel(key) {
-    for (let i = 0; i < TYPES.length; i++) {
-      if (TYPES[i].key === key) return TYPES[i].label;
-    }
-    return key || '其他';
+  function agentLabel(key) {
+    const found = AGENT_MAP[key];
+    return found ? found.label : (key || '其他');
+  }
+
+  function campOfAgent(key) {
+    const found = AGENT_MAP[key];
+    return found ? found.campKey : null;
+  }
+
+  function campLabel(key) {
+    const found = CAMPS.filter(function (c) { return c.key === key; })[0];
+    return found ? found.label : (key || '其他');
   }
 
   function uniq(arr) {
@@ -59,8 +68,35 @@
     });
   }
 
-  function typesOf(id) {
-    return uniq(productsOf(id).map(function (p) { return p.type; }).filter(Boolean));
+  /**
+   * 摊位涉及的角色（去重）。
+   * 一件制品可标注多个角色，摊位层面汇总。
+   */
+  function charactersOf(id) {
+    const out = [];
+    productsOf(id).forEach(function (p) {
+      if (!Array.isArray(p.characters)) return;
+      p.characters.forEach(function (c) {
+        if (c && out.indexOf(c) === -1) out.push(c);
+      });
+    });
+    return out;
+  }
+
+  /** 摊位涉及的角色中有哪些属于「已收录信息」的阵营 */
+  function campsOf(id) {
+    return uniq(charactersOf(id).map(campOfAgent).filter(Boolean));
+  }
+
+  /**
+   * 是否属于「其他」：收录了制品，但没有任何已知阵营的角色标注。
+   * 注意：没有任何数据的摊位是「待补充」，不能算进「其他」，
+   * 否则刚上线时点「其他」会把全部空摊位都筛出来。
+   */
+  function isOtherCategory(id) {
+    const known = charactersOf(id).filter(function (c) { return !!AGENT_MAP[c]; });
+    if (known.length) return false;
+    return productsOf(id).length > 0;
   }
 
   function tagsOf(id) {
@@ -138,14 +174,26 @@
   const filter = {
     query: '',
     zone: 'ALL',
-    type: 'ALL',
+    camp: 'ALL',
+    agent: 'ALL',
     onlyWish: false
   };
 
   function matches(stall) {
     if (filter.onlyWish && !isWished(stall.id)) return false;
     if (filter.zone !== 'ALL' && zoneOf(stall.id) !== filter.zone) return false;
-    if (filter.type !== 'ALL' && typesOf(stall.id).indexOf(filter.type) === -1) return false;
+
+    if (filter.camp !== 'ALL') {
+      if (filter.camp === 'other') {
+        if (!isOtherCategory(stall.id)) return false;
+      } else if (campsOf(stall.id).indexOf(filter.camp) === -1) {
+        return false;
+      }
+    }
+
+    if (filter.agent !== 'ALL' && charactersOf(stall.id).indexOf(filter.agent) === -1) {
+      return false;
+    }
 
     const q = filter.query.trim().toLowerCase();
     if (!q) return true;
@@ -160,7 +208,9 @@
     productsOf(stall.id).forEach(function (p) {
       bag.push(p.title || '');
       bag.push(p.desc || '');
-      bag.push(typeLabel(p.type));
+      if (Array.isArray(p.characters)) {
+        p.characters.forEach(function (c) { bag.push(agentLabel(c)); });
+      }
     });
     return bag.join(' ').toLowerCase().indexOf(q) !== -1;
   }
@@ -188,7 +238,8 @@
   function renderHome() {
     updateStats();
     renderZoneFilters();
-    renderTypeFilters();
+    renderCampFilters();
+    renderAgentFilters();
     renderList();
   }
 
@@ -207,16 +258,43 @@
     box.innerHTML = html;
   }
 
-  function renderTypeFilters() {
-    const box = document.getElementById('type-filters');
+  /* 一级筛选：阵营 */
+  function renderCampFilters() {
+    const box = document.getElementById('camp-filters');
     if (!box) return;
 
-    let html = chipHtml('type', 'ALL', '全部类型', '', filter.type === 'ALL');
-    TYPES.forEach(function (t) {
+    let html = chipHtml('camp', 'ALL', '全部阵营', '', filter.camp === 'ALL');
+    CAMPS.forEach(function (c) {
+      const n = (c.key === 'other')
+        ? STALLS.filter(function (s) { return isOtherCategory(s.id); }).length
+        : STALLS.filter(function (s) { return campsOf(s.id).indexOf(c.key) !== -1; }).length;
+
+      html += chipHtml('camp', c.key, c.label, n ? String(n) : '', filter.camp === c.key, n === 0);
+    });
+    box.innerHTML = html;
+  }
+
+  /* 二级筛选：角色。只在选中具体阵营后展开 */
+  function renderAgentFilters() {
+    const box = document.getElementById('agent-filters');
+    if (!box) return;
+
+    const camp = CAMPS.filter(function (c) { return c.key === filter.camp; })[0];
+
+    if (!camp || camp.key === 'other' || !camp.agents.length) {
+      box.innerHTML = '';
+      box.hidden = true;
+      return;
+    }
+
+    box.hidden = false;
+
+    let html = chipHtml('agent', 'ALL', '全部角色', '', filter.agent === 'ALL');
+    camp.agents.forEach(function (a) {
       const n = STALLS.filter(function (s) {
-        return typesOf(s.id).indexOf(t.key) !== -1;
+        return charactersOf(s.id).indexOf(a.key) !== -1;
       }).length;
-      html += chipHtml('type', t.key, t.label, n ? String(n) : '', filter.type === t.key, n === 0);
+      html += chipHtml('agent', a.key, a.label, n ? String(n) : '', filter.agent === a.key, n === 0);
     });
     box.innerHTML = html;
   }
@@ -263,7 +341,8 @@
     const tips = [];
     if (filter.query) tips.push('搜索词「' + esc(filter.query) + '」');
     if (filter.zone !== 'ALL') tips.push(esc(filter.zone) + ' 区');
-    if (filter.type !== 'ALL') tips.push(esc(typeLabel(filter.type)));
+    if (filter.agent !== 'ALL') tips.push(esc(agentLabel(filter.agent)));
+    else if (filter.camp !== 'ALL') tips.push(esc(campLabel(filter.camp)));
     if (filter.onlyWish) tips.push('我的清单');
 
     return '<div class="empty">' +
@@ -275,7 +354,7 @@
 
   function cardHtml(s) {
     const st = stateOf(s.id);
-    const types = typesOf(s.id).slice(0, 3);
+    const chars = charactersOf(s.id).slice(0, 3);
     const wished = isWished(s.id);
     const owner = detailOf(s.id) && detailOf(s.id).owner ? detailOf(s.id).owner : '';
 
@@ -288,8 +367,8 @@
       (owner ? '<div class="stall-owner">' + esc(owner) + '</div>' : '') +
       '<div class="card-bottom">' +
       '<span class="state state-' + st + '">' + esc(STATE_TEXT[st]) + '</span>' +
-      (types.length ? '<span class="mini-types">' +
-        types.map(function (t) { return '<i>' + esc(typeLabel(t)) + '</i>'; }).join('') +
+      (chars.length ? '<span class="mini-types">' +
+        chars.map(function (c) { return '<i>' + esc(agentLabel(c)) + '</i>'; }).join('') +
         '</span>' : '') +
       '</div>' +
       '</a>';
@@ -414,6 +493,13 @@
   function productHtml(p) {
     const img = (Array.isArray(p.images) ? p.images : []).filter(Boolean)[0];
     const price = priceText(p);
+    const chars = Array.isArray(p.characters) ? p.characters.filter(Boolean) : [];
+
+    const charsHtml = chars.length
+      ? chars.map(function (c) {
+          return '<span class="ptype">' + esc(agentLabel(c)) + '</span>';
+        }).join('')
+      : '<span class="ptype">其他</span>';
 
     return '<article class="product">' +
       '<div class="product-img">' +
@@ -424,7 +510,7 @@
       '<div class="product-body">' +
       '<h3>' + esc(p.title) + '</h3>' +
       '<div class="product-meta">' +
-      '<span class="ptype">' + esc(typeLabel(p.type)) + '</span>' +
+      charsHtml +
       (price ? '<span class="pprice">' + esc(price) + '</span>' : '') +
       '</div>' +
       (p.desc ? '<p class="product-desc">' + esc(p.desc) + '</p>' : '') +
@@ -545,10 +631,20 @@
         return;
       }
 
-      const type = e.target.closest('[data-type]');
-      if (type) {
-        filter.type = type.getAttribute('data-type');
-        renderTypeFilters();
+      const camp = e.target.closest('[data-camp]');
+      if (camp) {
+        filter.camp = camp.getAttribute('data-camp');
+        filter.agent = 'ALL';
+        renderCampFilters();
+        renderAgentFilters();
+        renderList();
+        return;
+      }
+
+      const agent = e.target.closest('[data-agent]');
+      if (agent) {
+        filter.agent = agent.getAttribute('data-agent');
+        renderAgentFilters();
         renderList();
         return;
       }
@@ -610,7 +706,8 @@
   function resetFilters() {
     filter.query = '';
     filter.zone = 'ALL';
-    filter.type = 'ALL';
+    filter.camp = 'ALL';
+    filter.agent = 'ALL';
     filter.onlyWish = false;
 
     const search = document.getElementById('search-input');
@@ -619,7 +716,8 @@
     if (onlyWish) onlyWish.checked = false;
 
     renderZoneFilters();
-    renderTypeFilters();
+    renderCampFilters();
+    renderAgentFilters();
     renderList();
   }
 

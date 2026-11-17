@@ -314,6 +314,18 @@ img {
   display: none;
 }
 
+/* 二级筛选（角色）：用左侧竖线标出从属关系 */
+#agent-filters {
+  margin-left: 2px;
+  padding-left: 10px;
+  border-left: 2px solid rgba(233, 223, 0, 0.4);
+}
+
+#agent-filters .chip {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
 .chip {
   display: inline-flex;
   align-items: center;
