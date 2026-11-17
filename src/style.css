@@ -749,6 +749,23 @@ img {
   font-weight: 700;
 }
 
+/* 在售制品区提示：沿用摊主行与摊位卡片的浅灰背板 */
+.notice--card {
+  border-style: solid;
+  border-color: transparent;
+  background: var(--card);
+  color: var(--card-ink);
+}
+
+.notice--card .notice-t {
+  color: var(--card-ink);
+}
+
+.notice--card p {
+  margin: 0;
+  color: var(--card-ink-dim);
+}
+
 .notice p {
   margin: 0;
   color: var(--text-dim);
