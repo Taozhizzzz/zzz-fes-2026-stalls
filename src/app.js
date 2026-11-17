@@ -748,7 +748,29 @@
     }
 
     bind();
+    bindRowWheel();
     route();
+  }
+
+  /* 桌面端：鼠标停在筛选行上时，把竖向滚轮转成该行的横向滚动。
+     滚到两端后放行，页面恢复正常的竖向滚动。 */
+  function bindRowWheel() {
+    [].slice.call(document.querySelectorAll('.filter-row')).forEach(function (row) {
+      row.addEventListener('wheel', function (e) {
+        if (e.deltaY === 0) return;
+
+        // 行模式（部分鼠标/设置）下 deltaY 的单位是行，换算成像素
+        const step = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+
+        const max = row.scrollWidth - row.clientWidth;
+        if (max <= 1) return;
+        if (step > 0 && row.scrollLeft >= max - 1) return;
+        if (step < 0 && row.scrollLeft <= 0) return;
+
+        e.preventDefault();
+        row.scrollLeft += step;
+      }, { passive: false });
+    });
   }
 
   if (document.readyState === 'loading') {
