@@ -175,7 +175,10 @@
       agents: [
         { key: 'peloyis', label: '佩洛伊斯' },
         { key: 'ling', label: '铃' },
-        { key: 'zhe', label: '哲' }
+        { key: 'zhe', label: '哲' },
+        { key: 'lindwein', label: '林德薇恩' },
+        { key: 'elda', label: '艾尔妲' },
+        { key: 'drechina', label: '德蕾琪娜' }
       ]
     }
   ];
