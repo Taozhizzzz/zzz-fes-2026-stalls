@@ -363,38 +363,6 @@ img {
   color: #6f6f7d;
 }
 
-/* 区分行与阵营行：浅底 + 与「全部」完全相同的近纯黑字 */
-#zone-filters .chip,
-#camp-filters .chip {
-  background: var(--card);
-  border-color: transparent;
-  color: var(--accent-ink);
-}
-
-#zone-filters .chip:hover,
-#camp-filters .chip:hover {
-  background: var(--card-hover);
-  border-color: rgba(0, 0, 0, 0.16);
-  color: var(--accent-ink);
-}
-
-#zone-filters .chip.active,
-#camp-filters .chip.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
-}
-
-#zone-filters .chip.dim,
-#camp-filters .chip.dim {
-  color: var(--card-ink-faint);
-}
-
-#zone-filters .chip-n,
-#camp-filters .chip-n {
-  opacity: 0.75;
-}
-
 .chip-n {
   font-size: 11px;
   opacity: 0.7;
