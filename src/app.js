@@ -89,14 +89,18 @@
   }
 
   /**
-   * 是否属于「其他」：收录了制品，但没有任何已知阵营的角色标注。
-   * 注意：没有任何数据的摊位是「待补充」，不能算进「其他」，
+   * 是否属于「其他」：
+   *   1) 收录了制品但没有任何角色标注；
+   *   2) 标注的角色全部属于「其他」阵营（佩洛伊斯 / 铃 / 哲）。
+   * 没有任何数据的摊位是「待补充」，不能算进「其他」，
    * 否则刚上线时点「其他」会把全部空摊位都筛出来。
    */
   function isOtherCategory(id) {
     const known = charactersOf(id).filter(function (c) { return !!AGENT_MAP[c]; });
-    if (known.length) return false;
-    return productsOf(id).length > 0;
+    if (!known.length) return productsOf(id).length > 0;
+    return known.every(function (c) {
+      return AGENT_MAP[c].campKey === 'other';
+    });
   }
 
   function tagsOf(id) {
@@ -281,7 +285,7 @@
 
     const camp = CAMPS.filter(function (c) { return c.key === filter.camp; })[0];
 
-    if (!camp || camp.key === 'other' || !camp.agents.length) {
+    if (!camp || !camp.agents.length) {
       box.innerHTML = '';
       box.hidden = true;
       return;

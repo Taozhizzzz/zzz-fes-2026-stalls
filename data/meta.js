@@ -172,7 +172,11 @@
     },
     {
       key: 'other', label: '其他',
-      agents: []
+      agents: [
+        { key: 'peloyis', label: '佩洛伊斯' },
+        { key: 'ling', label: '铃' },
+        { key: 'zhe', label: '哲' }
+      ]
     }
   ];
 
