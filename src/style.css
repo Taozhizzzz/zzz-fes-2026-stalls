@@ -341,8 +341,10 @@ img {
   font-weight: 700;
 }
 
+/* 无内容的筛选项：用略暗的文字色区分，但保持清晰可读
+   （不用 opacity 降低整体透明度，那会让文字发灰浑浊） */
 .chip.dim {
-  opacity: 0.42;
+  color: #6f6f7d;
 }
 
 .chip-n {
