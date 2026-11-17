@@ -80,12 +80,12 @@
 
     /* ---------- D 区：摊主已录入，制品待补充 ---------- */
     'D01': { owner: '原汁云喵' },
-    // D02：摊主信息暂缺
+    'D02': { owner: 'SuperAppleMan / Seseren' },
     'D03': { owner: '姬海棠羽笠果 / 一万根韭菜' },
     'D04': { owner: '七赫兹 SevenHz' },
     'D05': { owner: '寰宇诺亚' },
     'D06': { owner: 'ONANA Robotics' },
-    // D07：摊主信息暂缺
+    'D07': { owner: '西瓜啵啵好喝' },
     'D08': { owner: '哈米伦的弄笛者' },
     'D09': { owner: '邦布帮 / KKOMDA' }
   };
